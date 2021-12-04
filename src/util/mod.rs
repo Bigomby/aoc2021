@@ -1,5 +1,5 @@
 use itertools::Itertools;
-use std::{collections::HashMap, error::Error, fmt};
+use std::collections::HashMap;
 
 #[allow(dead_code)]
 pub fn decode_lines<'a, I, T, F>(input: I, decode: F) -> impl Iterator<Item = T> + 'a
@@ -68,17 +68,17 @@ pub fn concat_vec<T>(a: Vec<T>, b: Vec<T>) -> impl Iterator<Item = T> {
     a.into_iter().chain(b.into_iter())
 }
 
-#[derive(Debug)]
-struct PuzzleError;
+pub fn matrix_transpose<T: Copy>(matrix: &[Vec<T>]) -> Vec<Vec<T>> {
+    let rows = matrix.len();
+    let columns = matrix[0].len();
 
-impl fmt::Display for PuzzleError {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "Puzzle error")
-    }
-}
+    let mut transposed_matrix = vec![Vec::with_capacity(rows); columns];
 
-impl Error for PuzzleError {
-    fn source(&self) -> Option<&(dyn Error + 'static)> {
-        None
+    for row in matrix {
+        for i in 0..row.len() {
+            transposed_matrix[i].push(row[i]);
+        }
     }
+
+    transposed_matrix
 }
