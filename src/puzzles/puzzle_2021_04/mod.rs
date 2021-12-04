@@ -20,6 +20,17 @@ fn parse_boards(boards_entries: &[&str]) -> Vec<Board> {
         .collect_vec()
 }
 
+fn parse_input(input: PuzzleInput) -> Result<(Vec<Board>, Vec<i64>), Error> {
+    let sections = input.content().split("\n\n").collect_vec();
+    let number_entries = sections.get(0).unwrap();
+    let boards_entries = sections.get(1..).unwrap();
+
+    let boards = parse_boards(boards_entries);
+    let numbers = parse_numbers(number_entries)?;
+
+    Ok((boards, numbers))
+}
+
 fn compute_winners(boards: &mut [Board], numbers: &[i64]) -> Vec<(usize, i64)> {
     let mut winners = Vec::new();
 
@@ -51,29 +62,18 @@ fn compute_winners(boards: &mut [Board], numbers: &[i64]) -> Vec<(usize, i64)> {
     winners
 }
 
-fn parse_input(input: PuzzleInput) -> Result<(Vec<Board>, Vec<i64>), Error> {
-    let sections = input.content().split("\n\n").collect_vec();
-    let number_entries = sections.get(0).unwrap();
-    let boards_entries = sections.get(1..).unwrap();
+fn solve(winner_index: usize, winner_number: i64, boards: &[Board]) -> i64 {
+    let winner_board = boards.get(winner_index).expect("winner not found");
 
-    let boards = parse_boards(boards_entries);
-    let numbers = parse_numbers(number_entries)?;
-
-    Ok((boards, numbers))
-}
-
-fn solve(index: usize, winning_number: i64, boards: &[Board]) -> i64 {
-    let winner_board = boards.get(index).expect("winner not found");
-
-    winner_board.unmarked_numbers().sum::<i64>() * winning_number
+    winner_board.unmarked_numbers().sum::<i64>() * winner_number
 }
 
 pub fn solve_part1(input: PuzzleInput) -> Result<i64, Error> {
     let (mut boards, numbers) = parse_input(input)?;
     let winners = compute_winners(&mut boards, &numbers);
 
-    let (last_winner_index, winning_number) = *winners.first().expect("no one won");
-    let solution = solve(last_winner_index, winning_number, &boards);
+    let (first_winner_index, winner_number) = *winners.first().expect("no one won");
+    let solution = solve(first_winner_index, winner_number, &boards);
 
     Ok(solution)
 }
@@ -82,8 +82,8 @@ pub fn solve_part2(input: PuzzleInput) -> Result<i64, Error> {
     let (mut boards, numbers) = parse_input(input)?;
     let winners = compute_winners(&mut boards, &numbers);
 
-    let (last_winner_index, winning_number) = *winners.last().expect("no one won");
-    let solution = solve(last_winner_index, winning_number, &boards);
+    let (last_winner_index, winner_number) = *winners.last().expect("no one won");
+    let solution = solve(last_winner_index, winner_number, &boards);
 
     Ok(solution)
 }
@@ -93,7 +93,7 @@ mod tests {
     use super::*;
     use std::fs;
 
-    const INPUT_FILE: &str = "puzzles/2021/puzzle_04.input";
+    const INPUT_FILE: &str = "inputs/2021/puzzle_04.input";
     const EXAMPLE: &str = r#"7,4,9,5,11,17,23,2,0,14,21,24,10,16,13,6,15,25,12,22,18,20,8,19,3,26,1
 
 22 13 17 11  0

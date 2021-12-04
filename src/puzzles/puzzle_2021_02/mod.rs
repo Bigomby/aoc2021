@@ -49,7 +49,7 @@ mod tests {
     use super::*;
     use std::fs;
 
-    const INPUT_FILE: &str = "puzzles/2021/puzzle_02.input";
+    const INPUT_FILE: &str = "inputs/2021/puzzle_02.input";
     const EXAMPLE: &str = r#"forward 5
 down 5
 forward 8

@@ -38,7 +38,6 @@ impl Board {
 
             if Self::check_cols(&self.matrix) {
                 self.has_won = true;
-                return;
             }
         };
     }

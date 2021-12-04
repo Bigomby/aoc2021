@@ -107,7 +107,7 @@ mod tests {
     use super::*;
     use std::fs;
 
-    const INPUT_FILE: &str = "puzzles/2021/puzzle_03.input";
+    const INPUT_FILE: &str = "inputs/2021/puzzle_03.input";
     const EXAMPLE_1: &str = r#"00100
 11110
 10110
