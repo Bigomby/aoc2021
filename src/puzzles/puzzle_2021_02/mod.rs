@@ -2,6 +2,8 @@ mod engine;
 mod instruction;
 mod submarine;
 
+use crate::input::PuzzleInput;
+
 use self::engine::Engine;
 use self::instruction::Instruction;
 use self::submarine::{Position, Submarine};
@@ -31,8 +33,8 @@ impl Engine for Engine2 {
     }
 }
 
-pub fn solve<E: Engine>(input: &str) -> Result<i64, Box<dyn Error>> {
-    let instructions = input.lines().map(Instruction::parse);
+pub fn solve<E: Engine>(input: PuzzleInput) -> Result<i64, Box<dyn Error>> {
+    let instructions: Vec<Instruction> = input.lines()?;
     let mut submarine: Submarine<E> = Submarine::new();
 
     for instruction in instructions {
@@ -58,30 +60,34 @@ forward 2
 
     #[test]
     fn example1() {
-        let solution = solve::<Engine1>(EXAMPLE).unwrap();
+        let input = PuzzleInput::new(EXAMPLE);
+        let solution = solve::<Engine1>(input).unwrap();
 
         assert_eq!(solution, 150);
     }
 
     #[test]
     fn example2() {
-        let solution = solve::<Engine2>(EXAMPLE).unwrap();
+        let input = PuzzleInput::new(EXAMPLE);
+        let solution = solve::<Engine2>(input).unwrap();
 
         assert_eq!(solution, 900);
     }
 
     #[test]
     fn part1() {
-        let input = fs::read_to_string(INPUT_FILE).expect("error reading file");
-        let solution = solve::<Engine1>(&input).unwrap();
+        let content = fs::read_to_string(INPUT_FILE).expect("error reading file");
+        let input = PuzzleInput::new(content);
+        let solution = solve::<Engine1>(input).unwrap();
 
         assert_eq!(solution, 1868935);
     }
 
     #[test]
     fn part2() {
-        let input = fs::read_to_string(INPUT_FILE).expect("error reading file");
-        let solution = solve::<Engine2>(&input).unwrap();
+        let content = fs::read_to_string(INPUT_FILE).expect("error reading file");
+        let input = PuzzleInput::new(content);
+        let solution = solve::<Engine2>(input).unwrap();
 
         assert_eq!(solution, 1965970888);
     }

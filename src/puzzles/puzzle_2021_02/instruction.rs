@@ -1,4 +1,6 @@
+use anyhow::{anyhow, Error};
 use itertools::Itertools;
+use std::str::FromStr;
 
 pub enum Instruction {
     Forward(i64),
@@ -6,16 +8,23 @@ pub enum Instruction {
     Down(i64),
 }
 
-impl Instruction {
-    pub fn parse(input: &str) -> Self {
-        let (name, value) = input.split(' ').take(2).collect_tuple().unwrap();
-        let value = value.parse().unwrap();
+impl FromStr for Instruction {
+    type Err = Error;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        let (name, value) = s
+            .split(' ')
+            .take(2)
+            .collect_tuple()
+            .ok_or(anyhow!("cannot parse line"))?;
+
+        let value = value.parse()?;
 
         match name {
-            "forward" => Instruction::Forward(value),
-            "up" => Instruction::Up(value),
-            "down" => Instruction::Down(value),
-            _ => unimplemented!(),
+            "forward" => Ok(Instruction::Forward(value)),
+            "up" => Ok(Instruction::Up(value)),
+            "down" => Ok(Instruction::Down(value)),
+            x => Err(anyhow!("Invalid instruction: {}", x)),
         }
     }
 }
