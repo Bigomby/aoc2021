@@ -28,25 +28,8 @@ impl FromStr for Line {
 
         let start = Coords { x: x1, y: y1 };
         let end = Coords { x: x2, y: y2 };
+        let line: Line = (start, end).into();
 
-        // Not horizontal or vertical
-        if x1 != x2 && y1 != y2 {
-            // Not diagonal
-            if (x1 - x2).abs() != (y1 - y2).abs() {
-                return Ok(Self::Invalid);
-            }
-
-            return Ok(Self::Diagonal(start, end));
-        }
-
-        if x1 != x2 {
-            return Ok(Self::Horizontal(start, end));
-        }
-
-        if y1 != y2 {
-            return Ok(Self::Vertical(start, end));
-        }
-
-        Ok(Self::Point(start))
+        Ok(line)
     }
 }

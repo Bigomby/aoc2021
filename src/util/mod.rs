@@ -144,7 +144,7 @@ pub fn is_vertical(start: &Coords, end: &Coords) -> bool {
 }
 
 pub fn is_diagonal(start: &Coords, end: &Coords) -> bool {
-    start.x != end.x && start.y != end.y && ((start.x - end.x).abs() != (start.y - end.y).abs())
+    start.x != end.x && start.y != end.y && ((start.x - end.x).abs() == (start.y - end.y).abs())
 }
 
 impl From<(Coords, Coords)> for Line {
