@@ -82,3 +82,78 @@ pub fn matrix_transpose<T: Copy>(matrix: &[Vec<T>]) -> Vec<Vec<T>> {
 
     transposed_matrix
 }
+
+#[derive(Debug)]
+pub struct Coords {
+    pub x: i64,
+    pub y: i64,
+}
+
+#[derive(Debug)]
+pub enum Line {
+    Horizontal(Coords, Coords),
+    Vertical(Coords, Coords),
+    Diagonal(Coords, Coords),
+    Point(Coords),
+    Invalid,
+}
+
+#[derive(Debug)]
+pub struct Path {
+    pub points: Vec<Coords>,
+}
+
+fn compute_range(start: i64, end: i64) -> Vec<i64> {
+    if end - start > 0 {
+        (start..=end).collect_vec()
+    } else {
+        (end..=start).rev().collect_vec()
+    }
+}
+
+impl From<Line> for Path {
+    fn from(line: Line) -> Self {
+        let points = match line {
+            Line::Invalid => vec![],
+            Line::Point(coords) => vec![coords],
+            Line::Horizontal(start, end) => compute_range(start.x, end.x)
+                .iter()
+                .map(|x| Coords { x: *x, y: start.y })
+                .collect_vec(),
+            Line::Vertical(start, end) => compute_range(start.y, end.y)
+                .iter()
+                .map(|y| Coords { x: start.x, y: *y })
+                .collect_vec(),
+            Line::Diagonal(start, end) => compute_range(start.x, end.x)
+                .iter()
+                .zip(compute_range(start.y, end.y).iter())
+                .map(|(x, y)| Coords { x: *x, y: *y })
+                .collect_vec(),
+        };
+
+        Self { points }
+    }
+}
+
+pub fn is_horizontal(start: &Coords, end: &Coords) -> bool {
+    start.x != end.x && start.y == end.y
+}
+
+pub fn is_vertical(start: &Coords, end: &Coords) -> bool {
+    start.x == end.x && start.y != end.y
+}
+
+pub fn is_diagonal(start: &Coords, end: &Coords) -> bool {
+    start.x != end.x && start.y != end.y && ((start.x - end.x).abs() != (start.y - end.y).abs())
+}
+
+impl From<(Coords, Coords)> for Line {
+    fn from((start, end): (Coords, Coords)) -> Self {
+        match (start, end) {
+            (start, end) if is_vertical(&start, &end) => Self::Vertical(start, end),
+            (start, end) if is_horizontal(&start, &end) => Self::Horizontal(start, end),
+            (start, end) if is_diagonal(&start, &end) => Self::Diagonal(start, end),
+            _ => Self::Invalid,
+        }
+    }
+}
