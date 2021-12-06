@@ -45,11 +45,13 @@ pub fn take_half(range: (i32, i32), section: char) -> (i32, i32) {
     }
 }
 
-#[allow(dead_code)]
-pub fn frequencies(s: &str) -> impl Iterator<Item = (char, usize)> {
-    let mut freqs: HashMap<char, usize> = HashMap::new();
+pub fn frequencies<T>(s: Vec<T>) -> impl Iterator<Item = (T, i64)>
+where
+    T: std::hash::Hash + std::cmp::Eq,
+{
+    let mut freqs: HashMap<T, i64> = HashMap::new();
 
-    for c in s.chars() {
+    for c in s {
         match freqs.get_mut(&c) {
             Some(x) => {
                 *x += 1;
@@ -135,6 +137,10 @@ impl From<Line> for Path {
     }
 }
 
+pub fn is_point(start: &Coords, end: &Coords) -> bool {
+    start.x == end.x && start.y == end.y
+}
+
 pub fn is_horizontal(start: &Coords, end: &Coords) -> bool {
     start.x != end.x && start.y == end.y
 }
@@ -153,6 +159,7 @@ impl From<(Coords, Coords)> for Line {
             (start, end) if is_vertical(&start, &end) => Self::Vertical(start, end),
             (start, end) if is_horizontal(&start, &end) => Self::Horizontal(start, end),
             (start, end) if is_diagonal(&start, &end) => Self::Diagonal(start, end),
+            (start, end) if is_point(&start, &end) => Self::Point(start),
             _ => Self::Invalid,
         }
     }
