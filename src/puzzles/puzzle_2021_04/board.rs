@@ -4,7 +4,7 @@ type CheckMatrix = Vec<Vec<(i64, bool)>>;
 
 #[derive(Debug)]
 pub struct Board {
-    matrix: CheckMatrix,
+    pub matrix: CheckMatrix,
     has_won: bool,
 }
 

@@ -15,7 +15,7 @@ fn parse_numbers(number_entries: &str) -> Result<Vec<i64>, Error> {
 fn parse_boards(boards_entries: &[&str]) -> Vec<Board> {
     boards_entries
         .iter()
-        .map(|board| board.split('\n').collect_vec())
+        .map(|board| board.split('\n').filter(|l| !l.is_empty()).collect_vec())
         .map(|input| Board::new(&input))
         .collect_vec()
 }
@@ -112,7 +112,8 @@ mod tests {
 10 16 15  9 19
 18  8 23 26 20
 22 11 13  6  5
- 2  0 12  3  7"#;
+ 2  0 12  3  7
+"#;
 
     #[test]
     fn solve_example_1() {

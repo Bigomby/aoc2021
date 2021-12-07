@@ -4,10 +4,11 @@ use itertools::Itertools;
 use crate::{input::PuzzleInput, util};
 
 pub fn solve(input: PuzzleInput, total_days: usize) -> Result<i64, Error> {
-    let fishes = input
-        .content()
-        .split(',')
-        .map(|s| str::parse::<i64>(s).unwrap())
+    let fishes = input.lines::<String>()?;
+
+    let fishes = fishes
+        .iter()
+        .flat_map(|l| l.split(',').map(|s| str::parse::<i64>(s).unwrap()))
         .collect_vec();
 
     let mut counters = util::frequencies(fishes).collect_vec();
