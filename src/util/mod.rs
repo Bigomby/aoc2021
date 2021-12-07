@@ -85,6 +85,10 @@ pub fn matrix_transpose<T: Copy>(matrix: &[Vec<T>]) -> Vec<Vec<T>> {
     transposed_matrix
 }
 
+pub fn compute_geometric_sum(n: i64) -> i64 {
+    (n * (n + 1)) / 2
+}
+
 #[derive(Debug)]
 pub struct Coords {
     pub x: i64,
