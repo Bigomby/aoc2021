@@ -1,0 +1,55 @@
+[env]
+CARGO_MAKE_EXTEND_WORKSPACE_MAKEFILE = true
+
+[tasks.fetch-puzzle-2021_01]
+script_runner = "@rust"
+env = { PUZZLE_YEAR = "2021", PUZZLE_DAY = "1" }
+condition = { files_not_exist = ["${CARGO_MAKE_WORKING_DIRECTORY}/inputs/2021/puzzle_01.input"] }
+script = { file = "${CARGO_MAKE_WORKING_DIRECTORY}/scripts/fetch_puzzle.rs", absolute_path = true }
+
+[tasks.fetch-puzzle-2021_02]
+script_runner = "@rust"
+env = { PUZZLE_YEAR = "2021", PUZZLE_DAY = "2" }
+condition = { files_not_exist = ["${CARGO_MAKE_WORKING_DIRECTORY}/inputs/2021/puzzle_02.input"] }
+script = { file = "${CARGO_MAKE_WORKING_DIRECTORY}/scripts/fetch_puzzle.rs", absolute_path = true }
+
+[tasks.fetch-puzzle-2021_03]
+script_runner = "@rust"
+env = { PUZZLE_YEAR = "2021", PUZZLE_DAY = "3" }
+condition = { files_not_exist = ["${CARGO_MAKE_WORKING_DIRECTORY}/inputs/2021/puzzle_03.input"] }
+script = { file = "${CARGO_MAKE_WORKING_DIRECTORY}/scripts/fetch_puzzle.rs", absolute_path = true }
+
+[tasks.fetch-puzzle-2021_04]
+script_runner = "@rust"
+env = { PUZZLE_YEAR = "2021", PUZZLE_DAY = "4" }
+condition = { files_not_exist = ["${CARGO_MAKE_WORKING_DIRECTORY}/inputs/2021/puzzle_04.input"] }
+script = { file = "${CARGO_MAKE_WORKING_DIRECTORY}/scripts/fetch_puzzle.rs", absolute_path = true }
+
+[tasks.fetch-puzzle-2021_05]
+script_runner = "@rust"
+env = { PUZZLE_YEAR = "2021", PUZZLE_DAY = "5" }
+condition = { files_not_exist = ["${CARGO_MAKE_WORKING_DIRECTORY}/inputs/2021/puzzle_05.input"] }
+script = { file = "${CARGO_MAKE_WORKING_DIRECTORY}/scripts/fetch_puzzle.rs", absolute_path = true }
+
+[tasks.fetch-puzzle-2021_06]
+script_runner = "@rust"
+env = { PUZZLE_YEAR = "2021", PUZZLE_DAY = "6" }
+condition = { files_not_exist = ["${CARGO_MAKE_WORKING_DIRECTORY}/inputs/2021/puzzle_06.input"] }
+script = { file = "${CARGO_MAKE_WORKING_DIRECTORY}/scripts/fetch_puzzle.rs", absolute_path = true }
+
+[tasks.fetch-puzzle-2021_07]
+script_runner = "@rust"
+env = { PUZZLE_YEAR = "2021", PUZZLE_DAY = "7" }
+condition = { files_not_exist = ["${CARGO_MAKE_WORKING_DIRECTORY}/inputs/2021/puzzle_07.input"] }
+script = { file = "${CARGO_MAKE_WORKING_DIRECTORY}/scripts/fetch_puzzle.rs", absolute_path = true }
+
+[tasks.fetch]
+dependencies = [
+    "fetch-puzzle-2021_01",
+    "fetch-puzzle-2021_02",
+    "fetch-puzzle-2021_03",
+    "fetch-puzzle-2021_04",
+    "fetch-puzzle-2021_05",
+    "fetch-puzzle-2021_06",
+    "fetch-puzzle-2021_07",
+]
